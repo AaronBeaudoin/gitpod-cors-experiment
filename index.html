@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gitpod CORS Experiment</title>
+</head>
+<body>
+  Fetch hasn't run yet...
+
+  <script>
+    let serviceUrl = "https://3000-blue-impala-bujeuvac.ws-us17.gitpod.io";
+    let request = fetch(serviceUrl, { credentials: "include" });
+    
+    request.then(_ => {
+      document.body.innerText = "Fetch ran successfully!";
+    }).catch(_ => {
+      document.body.innerText = "Fetch failed!";
+    });
+  </script>
+</body>
+</html>
