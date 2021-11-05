@@ -4,7 +4,7 @@ let app = express();
 
 app.get("/", (request, response) => {
   console.log(`[${new Date()}] Request Received: /`);
-  response.sendFile("index.html");
+  response.sendFile(__dirname + "/index.html");
 });
 
 app.get("/url", (request, response) => {

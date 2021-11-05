@@ -1,6 +1,9 @@
 tasks:
-  - before: export SERVICE_URL=$(gp url 3001) && export APP_URL=$(gp url 3000)
-    init: npm install && gp sync-done install
+  - init: >
+      npm install &&
+      export SERVICE_URL=$(gp url 3001) &&
+      export APP_URL=$(gp url 3000) &&
+      gp sync-done install
   - command: gp sync-await install && npm run service
   - command: gp sync-await install && npm run app
 
