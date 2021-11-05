@@ -10,14 +10,15 @@
 <body>
   <div id="app">
     <p v-if="serviceUrl"><b>Service URL:</b> {{ serviceUrl }}</p>
-    <p v-if="serviceResponse"><b>Service Response:</b> {{ serviceResponse }}</p>
+    <p v-if="serviceResponse" class="response"><b>Service Response:</b> {{ serviceResponse }}</p>
     <p><b>Status:</b> {{ message }}</p>
     <button @click="callService(false)">Call Service (Plain)</button>
     <button @click="callService(true)">Call Service (Include Credentials)</button>
-    <div class="history" v-if="history.length">
+    <div v-if="history.length" class="history">
       <p>Request History:</p>
       <p v-for="line in history">{{ line }}</p>
     </div>
+    <div v-if="tip" class="tip">{{ tip }}</div>
   </div>
 
   <script>
@@ -27,7 +28,8 @@
         serviceUrl: null,
         serviceResponse: null,
         message: "No request made yet...",
-        history: []
+        history: [],
+        tip: null
       },
       created() {
         fetch("/url").then(_ => _.text().then(_ => this.serviceUrl = _));
@@ -42,9 +44,11 @@
             _.text().then(_ => this.serviceResponse = _);
             this.message = "Request to service was successful!";
             this.history.push(`[${new Date()}] Success!`);
+            this.tip = null;
           }).catch(_ => {
             this.message = "Request to service failed!";
             this.history.push(`[${new Date()}] Failure!`);
+            if (includeCredentials) this.tip = "Check the service server code. Are credentials enabled?";
           });
         }
       }
@@ -66,6 +70,10 @@
   border: 1px solid hsl(0, 0%, 70%);
 }
 
+.response {
+  color: hsl(100, 100%, 30%);
+}
+
 button {
   margin-top: 16px;
   margin-right: 4px;
@@ -83,5 +91,11 @@ button {
   margin-bottom: 4px;
   font-weight: bold;
   text-decoration: underline;
+}
+
+.tip {
+  margin-top: 16px;
+  padding: 16px;
+  background-color: hsl(0, 50%, 90%);
 }
 </style>
