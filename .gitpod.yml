@@ -2,7 +2,7 @@ tasks:
   - before: |
       npm install
       gp sync-done install
-  - init: |
+    init: |
       export APP_URL=$(gp url 3000)
       gp sync-await install
     command: |

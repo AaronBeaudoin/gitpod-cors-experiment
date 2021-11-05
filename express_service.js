@@ -14,4 +14,5 @@ app.get("/", (request, response) => {
 
 let server = http.createServer(app);
 server.listen(3001);
+console.log(`[APP_URL] ${process.env.APP_URL}`);
 console.log(`[${new Date()}] Server listening on port 3001...`);

@@ -14,4 +14,5 @@ app.get("/url", (request, response) => {
 
 let server = http.createServer(app);
 server.listen(3000);
+console.log(`[SERVICE_URL] ${process.env.SERVICE_URL}`);
 console.log(`[${new Date()}] Server listening on port 3000...`);

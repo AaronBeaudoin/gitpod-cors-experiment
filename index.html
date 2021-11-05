@@ -29,7 +29,7 @@
         message: "No request made yet...",
         history: []
       },
-      create() {
+      created() {
         fetch("/url").then(_ => _.text().then(_ => this.serviceUrl = _));
       },
       methods: {
