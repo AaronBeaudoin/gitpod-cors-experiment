@@ -4,7 +4,10 @@ let express = require("express");
 let app = express();
 
 app.use(cors({
-  origin: process.env.APP_URL
+  origin: process.env.APP_URL,
+  // Set below to `true` for at least the first request,
+  // then you can disable it again! What!? Why?
+  credentials: false
 }));
 
 app.get("/", (request, response) => {
