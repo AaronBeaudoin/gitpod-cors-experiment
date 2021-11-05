@@ -1,8 +1,10 @@
 tasks:
-  - init: npm install
-    command: node index.js
-  - command: python -m http.server
+  - before: export SERVICE_URL=$(gp url 3001) && export APP_URL=$(gp url 3000)
+    init: npm install && gp sync-done install
+  - command: gp sync-done install && npm run service
+  - command: gp sync-done install && npm run app
 
 ports:
-  - port: 8000
+  - port: 3001
   - port: 3000
+    onOpen: open-preview

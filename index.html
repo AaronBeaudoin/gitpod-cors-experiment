@@ -5,19 +5,83 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gitpod CORS Experiment</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
 </head>
 <body>
-  Fetch hasn't run yet...
+  <div id="app">
+    <p v-if="serviceUrl"><b>Service URL:</b> {{ serviceUrl }}</p>
+    <p v-if="serviceResponse"><b>Service Response:</b> {{ serviceResponse }}</p>
+    <p><b>Status:</b> {{ message }}</p>
+    <button @click="callService(false)">Call Service (Plain)</button>
+    <button @click="callService(true)">Call Service (Include Credentials)</button>
+    <div class="history" v-if="history.length">
+      <p>Request History:</p>
+      <p v-for="line in history">{{ line }}</p>
+    </div>
+  </div>
 
   <script>
-    let serviceUrl = "https://3000-blue-impala-bujeuvac.ws-us17.gitpod.io";
-    let request = fetch(serviceUrl, { credentials: "include" });
-    
-    request.then(_ => {
-      document.body.innerText = "Fetch ran successfully!";
-    }).catch(_ => {
-      document.body.innerText = "Fetch failed!";
+    let app = new Vue({
+      el: "#app",
+      data :{
+        serviceUrl: null,
+        serviceResponse: null,
+        message: "No request made yet...",
+        history: []
+      },
+      create() {
+        fetch("/url").then(_ => _.text().then(_ => this.serviceUrl = _));
+      },
+      methods: {
+        callService(includeCredentials) {
+          let fetchConfig = {};
+          if (includeCredentials) fetchConfig.credentials = "include";
+          
+          let request = fetch(this.serviceUrl, fetchConfig);
+          request.then(_ => {
+            _.text().then(_ => this.serviceResponse = _);
+            this.message = "Request to service was successful!";
+            this.history.push(`[${new Date()}] Success!`);
+          }).catch(_ => {
+            this.message = "Request to service failed!";
+            this.history.push(`[${new Date()}] Failure!`);
+          });
+        }
+      }
     });
   </script>
 </body>
 </html>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+#app {
+  margin: 16px;
+  padding: 16px;
+  border: 1px solid hsl(0, 0%, 70%);
+}
+
+button {
+  margin-top: 16px;
+  margin-right: 4px;
+  padding: 2px 4px;
+  font-weight: bold;
+}
+
+.history {
+  margin-top: 16px;
+  padding: 16px;
+  background-color:hsl(0, 0%, 90%);
+}
+
+.history :first-child {
+  margin-bottom: 4px;
+  font-weight: bold;
+  text-decoration: underline;
+}
+</style>
