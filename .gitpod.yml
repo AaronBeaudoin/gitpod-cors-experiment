@@ -1,16 +1,14 @@
 tasks:
-  - before: |
+  - init: |
       npm install
+    command: |
       gp sync-done install
-    init: |
       export APP_URL=$(gp url 3000)
       gp sync-await install
-    command: |
       npm run service
-  - init: |
+  - command: |
       export SERVICE_URL=$(gp url 3001)
       gp sync-await install
-    command: |
       npm run app
 
 ports:
